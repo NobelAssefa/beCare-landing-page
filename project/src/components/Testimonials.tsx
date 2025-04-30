@@ -48,7 +48,7 @@ const Testimonials = () => {
         src={planeBg}
         alt="plane background"
         className="absolute inset-0 w-full h-full object-contain opacity-40 pointer-events-none z-0"
-        style={{ top: '50%', left: '30%', transform: 'translate(-50%, -50%)', maxHeight: '80%', maxWidth: '80%' }}
+        style={{ top: '40%', left: '25%', transform: 'translate(-50%, -50%)', maxHeight: '80%', maxWidth: '80%' }}
       />
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-20 pointer-events-none z-0">
