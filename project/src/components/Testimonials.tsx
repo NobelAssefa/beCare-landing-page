@@ -42,7 +42,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-20 bg-[#f0f4f5] relative overflow-hidden">
+    <section id="testimonials" className="py-20 bg-[#f0f4f5] relative overflow-hidden">
       {/* Plane background image */}
       <img
         src={planeBg}

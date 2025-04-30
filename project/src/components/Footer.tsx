@@ -8,8 +8,8 @@ const Footer = () => {
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center mb-4">
-              <Ticket className="h-8 w-8 text-orange-500" />
-              <span className="ml-2 text-2xl font-bold text-white">TicketPro</span>
+      
+              <span className=" text-2xl font-bold text-white">beCare</span>
             </div>
             <p className="mb-6">
               Your one-stop destination for all types of tickets. Fast, secure, and reliable booking service.

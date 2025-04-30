@@ -1,32 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Music, Plane, Trophy, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import worldMap from '../assets/world-map.png';
 
 const categories = [
   {
-    title: "Concerts & Events",
+    title: "Travel Options",
     description: "Get tickets to the hottest concerts and events in your area.",
     icon: <Music className="h-6 w-6" />,
     image: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=1600",
     color: "from-[#15626A] to-[#1A7A84]"
   },
   {
-    title: "Flight Tickets",
+    title: "Competitive Fares",
     description: "Book flights to destinations worldwide at competitive prices.",
     icon: <Plane className="h-6 w-6" />,
     image: "https://images.pexels.com/photos/379419/pexels-photo-379419.jpeg?auto=compress&cs=tinysrgb&w=1600",
     color: "from-[#15626A] to-[#1A7A84]"
   },
   {
-    title: "Sports Matches",
+    title: "Group Discounts",
     description: "Never miss a game with tickets to all major sporting events.",
     icon: <Trophy className="h-6 w-6" />,
     image: "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=1600",
     color: "from-[#15626A] to-[#1A7A84]"
   },
   {
-    title: "Conferences",
+    title: "Itinerary Advice",
+    description: "Connect with industry leaders at major conferences.",
+    icon: <Users className="h-6 w-6" />,
+    image: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    color: "from-[#15626A] to-[#1A7A84]"
+  },
+  {
+    title: "Ticket Issuance",
+    description: "Connect with industry leaders at major conferences.",
+    icon: <Users className="h-6 w-6" />,
+    image: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    color: "from-[#15626A] to-[#1A7A84]"
+  },
+  {
+    title: "Flexible Payment",
     description: "Connect with industry leaders at major conferences.",
     icon: <Users className="h-6 w-6" />,
     image: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600",
@@ -36,13 +50,45 @@ const categories = [
 
 const TicketCategories = () => {
   const [expanded, setExpanded] = useState<number | null>(null);
+  const expandedRef = useRef<HTMLDivElement | null>(null);
+
+  // Collapse on click/touch outside or scroll away
+  useEffect(() => {
+    if (expanded !== null) {
+      const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+        if (
+          expandedRef.current &&
+          !expandedRef.current.contains(event.target as Node)
+        ) {
+          setExpanded(null);
+        }
+      };
+      const handleScroll = () => {
+        const section = document.getElementById('services');
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.bottom < 60 || rect.top > window.innerHeight - 60) {
+            setExpanded(null);
+          }
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('touchstart', handleClickOutside);
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [expanded]);
 
   const handleExpand = (index: number) => {
     setExpanded(prev => prev === index ? null : index);
   };
 
   return (
-    <section className="py-20 bg-[#f0f4f5] relative overflow-hidden">
+    <section id="services" className="py-20 bg-[#f0f4f5] relative overflow-hidden">
       {/* World map background image */}
       <img
         src={worldMap}
@@ -58,35 +104,41 @@ const TicketCategories = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-[#15626A] mb-4">Discover Tickets</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#15626A] mb-4">OUR SERVICES</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Browse through our wide range of ticket categories and find exactly what you're looking for.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
+        <div className="grid grid-cols-6 gap-4 items-start w-full">
           {categories.map((category, index) => (
             <motion.div 
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-[#f0f4f5] rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl relative"
+              ref={expanded === index ? expandedRef : undefined}
+              initial={{ opacity: 0, y: 40, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: index * 0.12, type: 'spring', stiffness: 90 }}
+              whileHover={{ scale: 1.08, boxShadow: '0 8px 32px rgba(21,98,106,0.18)' }}
+              className={`bg-[#f0f4f5] rounded-2xl shadow-lg transition-all duration-500 hover:shadow-2xl relative mx-auto group ${expanded === index ? 'z-50' : 'z-30'} ${expanded === index ? 'w-[400px] max-w-[95vw]' : 'w-[180px]'} min-w-[160px]`}
+              layout
             >
-              <div className="h-48 relative overflow-hidden group-hover:h-56 transition-all duration-700">
+              <div className="h-32 relative overflow-hidden group-hover:h-40 transition-all duration-700 flex items-center justify-center">
+                <motion.span
+                  whileHover={{ rotate: 12, scale: 1.2 }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+                  className="inline-block"
+                >
+                  {category.icon}
+                </motion.span>
                 <img 
                   src={category.image} 
                   alt={category.title} 
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover absolute top-0 left-0 z-0 opacity-60 group-hover:scale-105 transition-transform duration-500" 
                 />
-                <div className={`absolute inset-0 bg-gradient-to-br from-[#15626A]/80 to-[#1A7A84]/80`}></div>
-                <div className="absolute inset-0 flex items-center justify-center text-white">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#15626A]/80 to-[#1A7A84]/80 z-10"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-white z-20">
                   <div className="text-center">
-                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 inline-flex mb-2">
-                      {category.icon}
-                    </div>
-                    <h3 className="text-xl font-bold">{category.title}</h3>
+                    <h3 className="text-base font-bold drop-shadow-lg">{category.title}</h3>
                   </div>
                 </div>
               </div>
@@ -114,8 +166,9 @@ const TicketCategories = () => {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.35, ease: 'easeInOut' }}
+                          transition={{ duration: 0.45, ease: 'easeInOut' }}
                           className="overflow-hidden w-full max-w-md mt-4"
+                          layout
                         >
                           <div className="bg-white rounded-xl shadow-xl p-6 border border-[#15626A]/20">
                             <p className="text-gray-700 leading-relaxed">

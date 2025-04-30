@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Ticket } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const menuItems = [
+    { label: 'Home', id: 'home' },
+    { label: 'Services', id: 'services' },
+    { label: 'Testimonials', id: 'testimonials' },
+    { label: 'Partners', id: 'partners' },
+    { label: 'Contact Us', id: 'contact-us' },
+  ];
+  const [activeMenu, setActiveMenu] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,6 +20,37 @@ const Header = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to section and set active menu
+  const handleMenuClick = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setActiveMenu(id);
+    }
+    setIsMenuOpen(false);
+  };
+
+  // Update activeMenu on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      let found = false;
+      for (const item of menuItems) {
+        const el = document.getElementById(item.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 120 && rect.bottom > 120) {
+            setActiveMenu(item.id);
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found) setActiveMenu('home');
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -33,17 +72,22 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            {['Home', 'Events', 'Travel', 'Sports', 'About Us'].map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase().replace(' ', '-')}`}
-                className={`font-medium transition-colors duration-200 ${
-                  isScrolled ? 'text-[#15626A] hover:text-[#034C53]' : 'text-white hover:text-gray-200'
-                }`}
+          <nav className="hidden md:flex space-x-2">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleMenuClick(item.id)}
+                className={`font-medium transition-colors duration-200 relative focus:outline-none px-4 py-2 cursor-pointer
+                  ${isScrolled ? 'text-[#15626A] hover:text-[#034C53]' : 'text-white hover:text-gray-200'}
+                `}
+                style={{ background: 'none', border: 'none', margin: 0 }}
               >
-                {item}
-              </a>
+                {item.label}
+                <span
+                  className={`absolute left-1/2 -translate-x-1/2 bottom-0 h-[3px] w-8 rounded-full transition-all duration-300
+                  ${activeMenu === item.id ? 'bg-[#15626A] opacity-100' : 'opacity-0'}`}
+                />
+              </button>
             ))}
           </nav>
 
@@ -62,19 +106,25 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg">
-            <div className="flex flex-col px-4 py-4 space-y-4">
-              {['Home', 'Events', 'Travel', 'Sports', 'About Us'].map((item) => (
-                <a 
-                  key={item} 
-                  href={`#${item.toLowerCase().replace(' ', '-')}`}
-                  className="text-gray-800 font-medium hover:text-[#15626A]"
-                  onClick={() => setIsMenuOpen(false)}
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-40">
+            <nav className="flex flex-col space-y-4 py-6 px-8">
+              {menuItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleMenuClick(item.id)}
+                  className={`font-medium text-lg text-left transition-colors duration-200 relative focus:outline-none
+                    ${activeMenu === item.id ? 'text-[#15626A]' : 'text-gray-700'}
+                  `}
+                  style={{ background: 'none', border: 'none', padding: 0, margin: 0 }}
                 >
-                  {item}
-                </a>
+                  {item.label}
+                  <span
+                    className={`absolute left-0 bottom-0 h-[3px] w-6 rounded-full transition-all duration-300
+                      ${activeMenu === item.id ? 'bg-[#15626A] opacity-100' : 'opacity-0'}`}
+                  />
+                </button>
               ))}
-            </div>
+            </nav>
           </div>
         )}
       </div>
