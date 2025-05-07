@@ -51,11 +51,11 @@ const Header: React.FC<HeaderProps> = ({ isScrolledPastHero }) => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolledPastHero 
           ? 'bg-white/90 backdrop-blur shadow-md py-2' 
-          : 'bg-transparent py-4'
+          : 'bg-transparent py-1 md:py-4'
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-1 md:mt-0">
           <div className="flex items-center">
             <span className={`inline-flex items-center justify-center h-20 w-20 rounded-full transition-all duration-300 ${isScrolledPastHero ? 'bg-[#15626A] shadow-lg' : ''}`}>
               <img src={logo} alt="beCare Logo" className={`h-16 w-16 object-contain ${isScrolledPastHero ? '' : 'filter brightness-0 invert'}`} />
