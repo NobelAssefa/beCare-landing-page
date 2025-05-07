@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import emailjs from 'emailjs-com';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -8,19 +9,34 @@ const ContactForm = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string|null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     if (formData.name && formData.email && formData.message) {
-      // In a real app, we would send this to an API
-      console.log('Submitted form:', formData);
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
-      
-      // Reset after 3 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 3000);
+      emailjs.send(
+        'service_ndrken5',
+        'template_gzt30u3',
+        {
+          name: formData.name,
+          email: formData.email,
+          from_email: formData.email,
+          message: formData.message,
+          title: 'Contact Inquiry',
+          time: new Date().toLocaleString(),
+        },
+        'Yd6feI21CyZ6t4ZFW'
+      )
+      .then(() => {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setIsSubmitted(false), 3000);
+      })
+      .catch((err) => {
+        setError('Failed to send message. Please try again later.');
+        console.log('EmailJS error:', err);
+      });
     }
   };
 
@@ -129,6 +145,17 @@ const ContactForm = () => {
                 className="mt-6 text-lg font-semibold text-green-200 bg-green-900/60 px-6 py-3 rounded-full shadow-lg inline-block"
               >
                 Thank you! Your message has been sent.
+              </motion.div>
+            )}
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="mt-6 text-lg font-semibold text-red-200 bg-red-900/60 px-6 py-3 rounded-full shadow-lg inline-block"
+              >
+                {error}
               </motion.div>
             )}
           </AnimatePresence>

@@ -1,48 +1,19 @@
-import React, { useState } from 'react';
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import planeBg from '../assets/plane.png';
-
-const testimonials = [
+import becare from '../assets/becare.jpg';
+const teamMembers = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    role: "Music Enthusiast",
-    image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    stars: 5,
-    quote: "TicketPro made getting tickets to my favorite band so easy! The interface is intuitive, and I received my tickets instantly. Will definitely use again!"
+    name: "Ehite Tassew",
+    role: "Founder & CEO",
+    image: becare
   },
-  {
-    id: 2,
-    name: "Michael Chen",
-    role: "Frequent Traveler",
-    image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    stars: 5,
-    quote: "I've booked flights through numerous platforms, but none compare to TicketPro. The prices are competitive, and their customer service is top-notch."
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    role: "Sports Fan",
-    image: "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    stars: 4,
-    quote: "As a die-hard sports fan, I need reliable ticket access. TicketPro has never let me down, even for high-demand games. Their app is fantastic!"
-  }
 ];
 
-const Testimonials = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextTestimonial = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
-  };
-
+const AboutUs = () => {
   return (
-    <section id="testimonials" className="py-20 bg-[#f0f4f5] relative overflow-hidden">
+    <section id="about-us" className="py-20 bg-[#f0f4f5] relative overflow-hidden">
       {/* Plane background image */}
       <img
         src={planeBg}
@@ -66,7 +37,7 @@ const Testimonials = () => {
             transition={{ duration: 0.7 }}
             className="text-3xl md:text-4xl font-bold text-[#15626A] mb-4"
           >
-            What Our Customers Say
+            About Us
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -75,117 +46,54 @@ const Testimonials = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Don't just take our word for it. Here's what customers have to say about their experience with TicketPro.
+            At BeCare, our mission is to make health and wellness accessible to everyone. We are a passionate team dedicated to providing innovative solutions that empower individuals to take control of their health journey.
           </motion.p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative bg-white rounded-2xl shadow-xl p-8 md:p-10"
-          >
-            {/* Desktop version - show all testimonials in a carousel */}
-            <div className="hidden md:block">
-              <div className="relative overflow-hidden">
-                <div 
-                  className="flex transition-transform duration-500 ease-in-out" 
-                  style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                >
-                  {testimonials.map((testimonial, idx) => (
-                    <motion.div
-                      key={testimonial.id}
-                      initial={{ opacity: 0, x: 40 }}
-                      animate={{ opacity: currentIndex === idx ? 1 : 0.5, x: currentIndex === idx ? 0 : 40 }}
-                      transition={{ duration: 0.5 }}
-                      className="w-full flex-shrink-0 px-4"
-                    >
-                      <div className="flex flex-col items-center text-center">
-                        <img 
-                          src={testimonial.image} 
-                          alt={testimonial.name} 
-                          className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-blue-100"
-                        />
-                        <div className="flex space-x-1 mb-4">
-                          {[...Array(5)].map((_, i) => (
-                            <Star 
-                              key={i} 
-                              className={`h-5 w-5 ${i < testimonial.stars ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
-                            />
-                          ))}
-                        </div>
-                        <blockquote className="italic text-gray-700 mb-4">"{testimonial.quote}"</blockquote>
-                        <div>
-                          <span className="font-bold text-[#15626A]">{testimonial.name}</span>
-                          <p className="text-blue-400 text-sm">{testimonial.role}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="bg-white rounded-2xl shadow-xl p-8 md:p-12 max-w-5xl mx-auto"
+        >
+          <div className="mb-10 text-center">
+            <h3 className="text-2xl font-semibold text-[#15626A] mb-2">Our Story</h3>
+            <p className="text-gray-700 max-w-3xl mx-auto">
+              Founded in 2024, BeCare was born out of a desire to bridge the gap between technology and personal well-being. Our diverse team brings together expertise from healthcare, technology, and design to create tools that truly make a difference.
+            </p>
+          </div>
 
-              <div className="flex justify-center mt-8 space-x-4">
-                <button 
-                  onClick={prevTestimonial}
-                  className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 transition-colors duration-300"
-                >
-                  <ChevronLeft className="h-6 w-6 text-blue-600" />
-                </button>
-                <button 
-                  onClick={nextTestimonial}
-                  className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 transition-colors duration-300"
-                >
-                  <ChevronRight className="h-6 w-6 text-blue-600" />
-                </button>
-              </div>
+          <div className="mb-10 text-center">
+            <h3 className="text-2xl font-semibold text-[#15626A] mb-2">Our Values</h3>
+            <ul className="flex flex-wrap justify-center gap-6 mt-4">
+              <li className="bg-blue-50 rounded-lg px-6 py-3 text-[#15626A] font-medium shadow-sm">Professionalism</li>
+              <li className="bg-blue-50 rounded-lg px-6 py-3 text-[#15626A] font-medium shadow-sm">Reliability</li>
+              <li className="bg-blue-50 rounded-lg px-6 py-3 text-[#15626A] font-medium shadow-sm">Responsiveness</li>
+              <li className="bg-blue-50 rounded-lg px-6 py-3 text-[#15626A] font-medium shadow-sm">Friendliness</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-semibold text-[#15626A] mb-8 text-center">Our CEO</h3>
+            <div className="flex justify-center">
+              {teamMembers.map(member => (
+                <div key={member.id} className="flex flex-col items-center bg-[#f0f4f5] rounded-xl p-6 shadow group hover:shadow-lg transition-shadow duration-300">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-blue-100 group-hover:border-blue-300 transition-colors duration-300"
+                  />
+                  <span className="font-bold text-[#15626A] text-lg mb-1">{member.name}</span>
+                  <span className="text-blue-400 text-sm">{member.role}</span>
+                </div>
+              ))}
             </div>
-
-            {/* Mobile version - show current testimonial only */}
-            <div className="md:hidden">
-              <div className="flex flex-col items-center text-center">
-                <img 
-                  src={testimonials[currentIndex].image} 
-                  alt={testimonials[currentIndex].name} 
-                  className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-blue-100"
-                />
-                <div className="flex space-x-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className={`h-5 w-5 ${i < testimonials[currentIndex].stars ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
-                    />
-                  ))}
-                </div>
-                <blockquote className="italic text-gray-700 mb-4">"{testimonials[currentIndex].quote}"</blockquote>
-                <div>
-                  <span className="font-bold text-[#15626A]">{testimonials[currentIndex].name}</span>
-                  <p className="text-blue-400 text-sm">{testimonials[currentIndex].role}</p>
-                </div>
-              </div>
-
-              <div className="flex justify-center mt-8 space-x-4">
-                <button 
-                  onClick={prevTestimonial}
-                  className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 transition-colors duration-300"
-                >
-                  <ChevronLeft className="h-6 w-6 text-blue-600" />
-                </button>
-                <button 
-                  onClick={nextTestimonial}
-                  className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 transition-colors duration-300"
-                >
-                  <ChevronRight className="h-6 w-6 text-blue-600" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-export default Testimonials;
+export default AboutUs;

@@ -1,21 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-
+import wellness from '../assets/wellness.png';  
+import etLogo from '../assets/et-logo.png';
+import birhanLogo from '../assets/birhan-logo.png';
 const partners = [
   {
     id: 1,
     name: "Global Airlines",
-    logo: "https://images.pexels.com/photos/8293778/pexels-photo-8293778.jpeg?auto=compress&cs=tinysrgb&w=1600"
+    logo: wellness
   },
   {
     id: 2,
     name: "EventPro",
-    logo: "https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=1600"
+    logo: etLogo
   },
   {
     id: 3,
     name: "Sports League",
-    logo: "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=1600"
+    logo: birhanLogo
   },
   {
     id: 4,

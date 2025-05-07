@@ -1,29 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Ticket } from 'lucide-react';
 import logo from '../assets/logo.png';
 
-const Header = () => {
+interface HeaderProps {
+  isScrolledPastHero?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isScrolledPastHero }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const menuItems = [
     { label: 'Home', id: 'home' },
     { label: 'Services', id: 'services' },
-    { label: 'Testimonials', id: 'testimonials' },
-    { label: 'Partners', id: 'partners' },
+    { label: 'About Us', id: 'about-us' },
+    // { label: 'Partners', id: 'partners' },
     { label: 'Contact Us', id: 'contact-us' },
   ];
   const [activeMenu, setActiveMenu] = useState('home');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Scroll to section and set active menu
   const handleMenuClick = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -33,7 +26,6 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  // Update activeMenu on scroll
   useEffect(() => {
     const handleScroll = () => {
       let found = false;
@@ -57,7 +49,7 @@ const Header = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
+        isScrolledPastHero 
           ? 'bg-white/90 backdrop-blur shadow-md py-2' 
           : 'bg-transparent py-4'
       }`}
@@ -65,8 +57,8 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <span className={`inline-flex items-center justify-center h-20 w-20 rounded-full transition-all duration-300 ${isScrolled ? 'bg-[#15626A] shadow-lg' : ''}`}>
-              <img src={logo} alt="beCare Logo" className={`h-16 w-16 object-contain ${isScrolled ? '' : 'filter brightness-0 invert'}`} />
+            <span className={`inline-flex items-center justify-center h-20 w-20 rounded-full transition-all duration-300 ${isScrolledPastHero ? 'bg-[#15626A] shadow-lg' : ''}`}>
+              <img src={logo} alt="beCare Logo" className={`h-16 w-16 object-contain ${isScrolledPastHero ? '' : 'filter brightness-0 invert'}`} />
             </span>
             
           </div>
@@ -78,7 +70,7 @@ const Header = () => {
                 key={item.id}
                 onClick={() => handleMenuClick(item.id)}
                 className={`font-medium transition-colors duration-200 relative focus:outline-none px-4 py-2 cursor-pointer
-                  ${isScrolled ? 'text-[#15626A] hover:text-[#034C53]' : 'text-white hover:text-gray-200'}
+                  ${isScrolledPastHero ? 'text-[#15626A] hover:text-[#034C53]' : 'text-white hover:text-gray-200'}
                 `}
                 style={{ background: 'none', border: 'none', margin: 0 }}
               >
@@ -97,9 +89,9 @@ const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
-              <X className={`h-6 w-6 ${isScrolled ? 'text-[#15626A]' : 'text-white'}`} />
+              <X className={`h-6 w-6 ${isScrolledPastHero ? 'text-[#15626A]' : 'text-white'}`} />
             ) : (
-              <Menu className={`h-6 w-6 ${isScrolled ? 'text-[#15626A]' : 'text-white'}`} />
+              <Menu className={`h-6 w-6 ${isScrolledPastHero ? 'text-[#15626A]' : 'text-white'}`} />
             )}
           </button>
         </div>

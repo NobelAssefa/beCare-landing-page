@@ -12,19 +12,13 @@ const categories = [
     color: "from-[#15626A] to-[#1A7A84]"
   },
   {
-    title: "Competitive Fares",
+    title: "Booking and Ticket ",
     description: "Book flights to destinations worldwide at competitive prices.",
     icon: <Plane className="h-6 w-6" />,
     image: "https://images.pexels.com/photos/379419/pexels-photo-379419.jpeg?auto=compress&cs=tinysrgb&w=1600",
     color: "from-[#15626A] to-[#1A7A84]"
   },
-  {
-    title: "Group Discounts",
-    description: "Never miss a game with tickets to all major sporting events.",
-    icon: <Trophy className="h-6 w-6" />,
-    image: "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    color: "from-[#15626A] to-[#1A7A84]"
-  },
+  
   {
     title: "Itinerary Advice",
     description: "Connect with industry leaders at major conferences.",
@@ -32,24 +26,12 @@ const categories = [
     image: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600",
     color: "from-[#15626A] to-[#1A7A84]"
   },
-  {
-    title: "Ticket Issuance",
-    description: "Connect with industry leaders at major conferences.",
-    icon: <Users className="h-6 w-6" />,
-    image: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    color: "from-[#15626A] to-[#1A7A84]"
-  },
-  {
-    title: "Flexible Payment",
-    description: "Connect with industry leaders at major conferences.",
-    icon: <Users className="h-6 w-6" />,
-    image: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    color: "from-[#15626A] to-[#1A7A84]"
-  }
+
+ 
 ];
 
 const TicketCategories = () => {
-  const [expanded, setExpanded] = useState<number | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
   const expandedRef = useRef<HTMLDivElement | null>(null);
 
   // Collapse on click/touch outside or scroll away
@@ -83,8 +65,8 @@ const TicketCategories = () => {
     }
   }, [expanded]);
 
-  const handleExpand = (index: number) => {
-    setExpanded(prev => prev === index ? null : index);
+  const handleExpand = (title: string) => {
+    setExpanded(prev => prev === title ? null : title);
   };
 
   return (
@@ -110,22 +92,22 @@ const TicketCategories = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-6 gap-4 items-start w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-start w-full">
           {categories.map((category, index) => (
             <motion.div 
-              key={index}
-              ref={expanded === index ? expandedRef : undefined}
-              initial={{ opacity: 0, y: 40, scale: 0.8 }}
+              key={category.title}
+              ref={expanded === category.title ? expandedRef : undefined}
+              initial={{ opacity: 0, y: 40, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: index * 0.12, type: 'spring', stiffness: 90 }}
-              whileHover={{ scale: 1.08, boxShadow: '0 8px 32px rgba(21,98,106,0.18)' }}
-              className={`bg-[#f0f4f5] rounded-2xl shadow-lg transition-all duration-500 hover:shadow-2xl relative mx-auto group ${expanded === index ? 'z-50' : 'z-30'} ${expanded === index ? 'w-[400px] max-w-[95vw]' : 'w-[180px]'} min-w-[160px]`}
+              transition={{ duration: 0.38, delay: index * 0.09, type: 'spring', stiffness: 170, damping: 18 }}
+              whileHover={{ scale: 1.04, boxShadow: '0 8px 32px rgba(21,98,106,0.14)' }}
+              className={`bg-[#f0f4f5] rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl relative group ${expanded === category.title ? 'z-50' : 'z-30'} w-full min-w-0 flex flex-col overflow-hidden`}
               layout
             >
-              <div className="h-32 relative overflow-hidden group-hover:h-40 transition-all duration-700 flex items-center justify-center">
+              <div className="h-32 relative overflow-hidden group-hover:h-40 transition-all duration-400 flex items-center justify-center">
                 <motion.span
-                  whileHover={{ rotate: 12, scale: 1.2 }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+                  whileHover={{ rotate: 12, scale: 1.15 }}
+                  transition={{ type: 'spring', stiffness: 240, damping: 14 }}
                   className="inline-block"
                 >
                   {category.icon}
@@ -133,7 +115,7 @@ const TicketCategories = () => {
                 <img 
                   src={category.image} 
                   alt={category.title} 
-                  className="w-full h-full object-cover absolute top-0 left-0 z-0 opacity-60 group-hover:scale-105 transition-transform duration-500" 
+                  className="w-full h-full object-cover absolute top-0 left-0 z-0 opacity-60 group-hover:scale-105 transition-transform duration-300" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-[#15626A]/80 to-[#1A7A84]/80 z-10"></div>
                 <div className="absolute inset-0 flex items-center justify-center text-white z-20">
@@ -142,17 +124,17 @@ const TicketCategories = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  <p className="text-gray-600 mb-4">{category.description}</p>
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="space-y-4 flex-1 flex flex-col">
+                  <p className="text-gray-600 mb-4 flex-1">{category.description}</p>
                   <div className="relative">
                     <button 
-                      onClick={() => handleExpand(index)}
-                      className="w-full py-2 border-2 border-[#15626A] text-[#15626A] rounded-full font-medium transition-colors duration-300 hover:bg-[#15626A] hover:text-white flex items-center justify-center gap-2"
+                      onClick={() => handleExpand(category.title)}
+                      className="w-full py-2 border-2 border-[#15626A] text-[#15626A] rounded-full font-medium transition-colors duration-200 hover:bg-[#15626A] hover:text-white flex items-center justify-center gap-2"
                     >
                       Learn More
-                      <svg className="w-4 h-4 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        {expanded === index ? (
+                      <svg className="w-4 h-4 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        {expanded === category.title ? (
                           <path d="M12 5v14M5 12h14" />
                         ) : (
                           <path d="M9 5l7 7-7 7" />
@@ -160,14 +142,15 @@ const TicketCategories = () => {
                         <path d="M9 5l7 7-7 7" />
                       </svg>
                     </button>
-                    <AnimatePresence>
-                      {expanded === index && (
+                    <AnimatePresence initial={false}>
+                      {expanded === category.title && (
                         <motion.div
+                          key={category.title + '-expanded'}
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.45, ease: 'easeInOut' }}
-                          className="overflow-hidden w-full max-w-md mt-4"
+                          transition={{ duration: 0.32, ease: 'easeInOut' }}
+                          className="overflow-hidden w-full max-w-md mt-4 mx-auto"
                           layout
                         >
                           <div className="bg-white rounded-xl shadow-xl p-6 border border-[#15626A]/20">

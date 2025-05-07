@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -14,6 +14,27 @@ function App() {
     document.title = 'beCare Ticket Office';
   }, []);
 
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
+
+  useEffect(() => {
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        setIsScrolledPastHero(!entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0,
+      }
+    );
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
+    }
+    return () => {
+      if (heroRef.current) observer.unobserve(heroRef.current);
+    };
+  }, []);
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -21,20 +42,19 @@ function App() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-white"
     >
-      <Header />
+      <Header isScrolledPastHero={isScrolledPastHero} />
       <main>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          ref={heroRef}
         >
           <HeroSection />
         </motion.div>
         <TicketCategories />
         <Testimonials />
-        <Partners />
         <ContactForm />
-   
       </main>
       <Footer />
     </motion.div>
